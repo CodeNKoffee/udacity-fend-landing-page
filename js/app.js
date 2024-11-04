@@ -13,50 +13,49 @@
  * 
 */
 
-/**
- * Comments should be present at the beginning of each procedure and class.
- * Great to have comments before crucial code sections within the procedure.
-*/
+document.addEventListener("DOMContentLoaded", () => {
+  // Global variables
+  const navList = document.getElementById("nav__list");
+  const sections = document.querySelectorAll("section");
 
-/**
- * Define Global Variables
- * 
-*/
+  // Helper functions
+  const isInViewport = (section) => {
+    const rect = section.getBoundingClientRect();
+    return (
+      rect.top < window.innerHeight && rect.bottom >= 0
+    );
+  };
 
+  const createNavItem = (section) => {
+    const navItem = document.createElement("li");
+    navItem.innerHTML = `<a href="#${section.id}" class="menu__link"></a>`
+    navItem.querySelector("a").textContent = section.getAttribute("data-nav");
+    return navItem;
+  }
 
-/**
- * End Global Variables
- * Start Helper Functions
- * 
-*/
+  // Main functions
+  // Dynamic navigation menu
+  sections.forEach((section) => {
+    const navItem = createNavItem(section);
+    navList.appendChild(navItem);
+  });
 
+  // Add class 'active' to section when near top of viewport
+  window.addEventListener("scroll", () => {
+    sections.forEach((section) => {
+      if (isInViewport(section)) {
+        section.classList.add("your-active-class"); // Updated class name
+      } else {
+        section.classList.remove("your-active-class"); // Updated class name
+      }
+    });
+  });
 
-
-/**
- * End Helper Functions
- * Begin Main Functions
- * 
-*/
-
-// build the nav
-
-
-// Add class 'active' to section when near top of viewport
-
-
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
-
+  // Scroll to anchor ID using scrollTO event
+  navList.addEventListener("click", (event) => {
+    event.preventDefault();
+    const sectionId = event.target.getAttribute("href").slice(1);
+    const section = document.getElementById(sectionId);
+    section.scrollIntoView({ behavior: "smooth" });
+  });
+})
